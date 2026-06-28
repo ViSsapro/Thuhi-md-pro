@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 const SESSION_BASE_PATH = './sessions';
 
 // MongoDB සම්බන්ධ කිරීම
-mongoose.connect(process.env.MONGODB_URI || 'මොන්ගොඩිබි_url_එක_දැන්').catch(err => console.log(err));
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://vimukthithuhina0_db_user:Admin123%40%230@cluster0.yqfdy6r.mongodb.net/?appName=Cluster0').catch(err => console.log(err));
 
 async function Pair(number, res = null) {
     const xnumber = number.replace(/[^0-9]/g, '');
