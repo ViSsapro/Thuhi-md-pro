@@ -6,14 +6,11 @@ const cors = require('cors');
 const { 
     default: makeWASocket, 
     useMultiFileAuthState, 
-    DisconnectReason, 
-    fetchLatestBaileysVersion, 
     makeCacheableSignalKeyStore 
 } = require('@whiskeysockets/baileys');
 
 const app = express();
 app.use(cors());
-app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 3000;
@@ -24,68 +21,53 @@ async function Pair(number, res) {
     const sessionId = `session_${xnumber}`;
     const sessionPath = path.join(SESSION_BASE_PATH, sessionId);
 
+    console.log(`Starting process for: ${xnumber}`);
+
     try {
         await fs.ensureDir(sessionPath);
         const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
-        const { version } = await fetchLatestBaileysVersion();
         const logger = pino({ level: 'silent' });
 
         const sock = makeWASocket({
-            version,
+            version: [2, 3000, 1015698730], // ස්ථාවර වර්ෂන් එකක්
             auth: { 
                 creds: state.creds, 
                 keys: makeCacheableSignalKeyStore(state.keys, logger) 
             },
             logger: logger,
-            browser: ["Chrome", "Windows", "3.0.0"],
             printQRInTerminal: false
         });
 
         sock.ev.on('creds.update', saveCreds);
 
-        sock.ev.on('connection.update', async (update) => {
-            const { connection, lastDisconnect } = update;
-            
-            if (connection === 'connecting') {
-                console.log(`Connecting: ${xnumber}`);
-            } else if (connection === 'open') {
-                console.log('Successfully Connected!');
-                // සම්බන්ධ වූ පසු session ෆයිල් එක වැදගත්
-            } else if (connection === 'close') {
-                const shouldReconnect = lastDisconnect.error?.output?.statusCode !== DisconnectReason.loggedOut;
-                if (shouldReconnect) {
-                    console.log('Connection closed, trying to reconnect...');
-                    Pair(number, res); 
-                }
-            }
-        });
-
-        // Pairing Code එක ලබා ගැනීම
         if (!sock.authState.creds.registered) {
-            // ටිකක් වෙලා ඉන්න, sock එක සූදානම් වෙන්න ඕනේ
-            setTimeout(async () => {
-                try {
-                    const pairingCode = await sock.requestPairingCode(xnumber);
-                    if (!res.headersSent) {
-                        res.json({ code: pairingCode });
-                    }
-                } catch (e) {
-                    if (!res.headersSent) res.json({ error: 'Code generation failed' });
+            // Pairing Code එක උත්පාදනය කිරීමට කෙටි පමා කිරීමක්
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            try {
+                const pairingCode = await sock.requestPairingCode(xnumber);
+                console.log("Generated Code Successfully:", pairingCode);
+                if (!res.headersSent) {
+                    res.json({ code: pairingCode });
                 }
-            }, 3000);
+            } catch (err) {
+                console.error("Error in requestPairingCode:", err);
+                if (!res.headersSent) res.json({ error: 'Pairing failed' });
+            }
         } else {
-            if (!res.headersSent) res.json({ error: 'Already registered' });
+            console.log("Number already registered.");
+            if (!res.headersSent) res.json({ error: 'Number already registered' });
         }
 
     } catch (err) {
-        console.error(err);
+        console.error("Critical Error:", err);
         if (!res.headersSent) res.json({ error: err.message });
     }
 }
 
 app.get('/pair', async (req, res) => {
-    if (!req.query.number) return res.json({ error: 'Provide a number' });
+    if (!req.query.number) return res.json({ error: 'Number is required' });
     await Pair(req.query.number, res);
 });
 
-app.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
