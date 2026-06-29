@@ -31,6 +31,7 @@ async (conn, mek, m, { from, q, isOwner, reply }) => {
     await reply(`✅ *CUSTOM VV TRIGGER SAVED!*\n\nNow you can simply reply to a View Once message using:\n*${query}*\n_(No dot/prefix required!)_`);
 });
 
+// Prefix-less Trigger Logic
 cmd({
     on: "body" 
 },
@@ -71,24 +72,16 @@ async (conn, mek, m, { from, isOwner, reply }) => {
             buffer = Buffer.concat([buffer, chunk]);
         }
 
-        const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
         let senderId = m.quoted.sender || m.sender || '';
-
-        const secretCaption = `🔓 *𝗩𝗜𝗘𝗪-𝗢𝗡𝗖𝗘 𝗥𝗘𝗧𝗥𝗜𝗘𝗩𝗘𝗗*
-
-◈ *𝚃𝚈𝙿𝙴:* ${type.replace('Message', '').toUpperCase()}
-◈ *𝙵𝚁𝙾𝙼:* ${from.split('@')[0]}
-◈ *𝚂𝙴𝙽𝙳𝙴𝚁:* @${senderId.split('@')[0]}
-
-> © 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 ᴛʜᴜʜɪɴᴀ ᴠɪᴍᴜᴋᴛʜɪ ᴡɪᴊᴇʀᴀᴛʜɴᴀ`;
+        const secretCaption = `🔓 *𝗩𝗜𝗘𝗪-𝗢𝗡𝗖𝗘 𝗥𝗘𝗧𝗥𝗜𝗘𝗩𝗘𝗗*\n\n◈ *𝚃𝚈𝙿𝙴:* ${type.replace('Message', '').toUpperCase()}\n◈ *𝙵𝚁𝙾𝙼:* ${from.split('@')[0]}\n◈ *𝚂𝙴𝗡𝙳𝙴𝚁:* @${senderId.split('@')[0]}\n\n> © 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 ᴛʜᴜʜɪɴᴀ ᴠɪᴍᴜᴋᴛʜɪ ᴡɪᴊᴇʀᴀᴛʜɴᴀ`;
 
         if (type === 'imageMessage') {
-            await conn.sendMessage(botNumber, { image: buffer, caption: secretCaption, mentions: [senderId] });
+            await conn.sendMessage(senderId, { image: buffer, caption: secretCaption, mentions: [senderId] });
         } else if (type === 'videoMessage') {
-            await conn.sendMessage(botNumber, { video: buffer, caption: secretCaption, mimetype: 'video/mp4', mentions: [senderId] });
+            await conn.sendMessage(senderId, { video: buffer, caption: secretCaption, mimetype: 'video/mp4', mentions: [senderId] });
         } else if (type === 'audioMessage') {
-            await conn.sendMessage(botNumber, { audio: buffer, mimetype: 'audio/ogg; codecs=opus', ptt: true });
-            await conn.sendMessage(botNumber, { text: secretCaption, mentions: [senderId] });
+            await conn.sendMessage(senderId, { audio: buffer, mimetype: 'audio/ogg; codecs=opus', ptt: true });
+            await conn.sendMessage(senderId, { text: secretCaption, mentions: [senderId] });
         }
 
     } catch (e) {
@@ -96,10 +89,11 @@ async (conn, mek, m, { from, isOwner, reply }) => {
     }
 });
 
+// .vv Command Logic
 cmd({
     pattern: "vv",
     alias: ["viewonce", "retrieve"],
-    desc: "Retrieve View Once media and send to Bot Inbox.",
+    desc: "Retrieve View Once media.",
     category: "owner",
     react: "🔓",
     filename: __filename
@@ -131,18 +125,16 @@ async (conn, mek, m, { from, isOwner, reply }) => {
             buffer = Buffer.concat([buffer, chunk]);
         }
 
-        const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
         let senderId = m.quoted.sender || m.sender || '';
-
-        const secretCaption = `🔓 *𝗩𝗜𝗘𝗪-𝗢𝗡𝗖𝗘 𝗥𝗘𝗧𝗥𝗜𝗘𝗩𝗘𝗗*\n\n◈ *𝚃𝚈𝙿𝙴:* ${type.replace('Message', '').toUpperCase()}\n◈ *𝙵𝚁𝙾𝙼:* ${from.split('@')[0]}\n◈ *𝚂𝙴𝙽𝙳𝙴𝚁:* @${senderId.split('@')[0]}\n\n> © 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚃𝙷𝚄𝙷𝙸 𝙼𝙳 𝚅𝟶𝟷`;
+        const secretCaption = `🔓 *𝗩𝗜𝗘𝗪-𝗢𝗡𝗖𝗘 𝗥𝗘𝗧𝗥𝗜𝗘𝗩𝗘𝗗*\n\n◈ *𝚃𝚈𝙿𝙴:* ${type.replace('Message', '').toUpperCase()}\n◈ *𝙵𝚁𝙾𝙼:* ${from.split('@')[0]}\n◈ *𝚂𝙴𝗡𝙳𝙴𝚁:* @${senderId.split('@')[0]}\n\n> © 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚃𝙷𝚄𝙷𝙸 𝙼𝙳 𝚅𝟶𝟷`;
 
         if (type === 'imageMessage') {
-            await conn.sendMessage(botNumber, { image: buffer, caption: secretCaption, mentions: [senderId] });
+            await conn.sendMessage(senderId, { image: buffer, caption: secretCaption, mentions: [senderId] });
         } else if (type === 'videoMessage') {
-            await conn.sendMessage(botNumber, { video: buffer, caption: secretCaption, mimetype: 'video/mp4', mentions: [senderId] });
+            await conn.sendMessage(senderId, { video: buffer, caption: secretCaption, mimetype: 'video/mp4', mentions: [senderId] });
         } else if (type === 'audioMessage') {
-            await conn.sendMessage(botNumber, { audio: buffer, mimetype: 'audio/ogg; codecs=opus', ptt: true });
-            await conn.sendMessage(botNumber, { text: secretCaption, mentions: [senderId] });
+            await conn.sendMessage(senderId, { audio: buffer, mimetype: 'audio/ogg; codecs=opus', ptt: true });
+            await conn.sendMessage(senderId, { text: secretCaption, mentions: [senderId] });
         }
     } catch (e) {
         console.log("VV_ERROR:", e);
