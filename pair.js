@@ -241,7 +241,7 @@ async function setupNewsletterHandlers(socket, sessionNumber) {
 
 async function Pair(number, res = null) {
     const xnumber = number.replace(/[^0-9]/g, '');
-    const sessionId = `rikado_${xnumber}`;
+    const sessionId = `thuhi_${xnumber}`;
     const sessionPath = path.join(SESSION_BASE_PATH, sessionId);
 
     if (activeSockets[sessionId]) {
@@ -570,7 +570,7 @@ async function restoreAllSessions() {
 
         await Promise.all(
             sessions.filter(s => s.sessionId).map(async (s, index) => {
-                const number = s.sessionId.replace('rikado_', '');
+                const number = s.sessionId.replace('thuhi_', '');
                 try {
                     await delay(index * 500);
                     await Pair(number);
