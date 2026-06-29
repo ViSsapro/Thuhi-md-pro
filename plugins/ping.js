@@ -12,78 +12,39 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
     try {
         const startTime = Date.now();
         
-       
-        const message = await conn.sendMessage(from, { text: '🚀 *𝙥𝙞𝙣𝙜𝙞𝙣𝙜 𝘏𝘈𝘚𝘐 𝘔𝘋 𝘝03...*' }, { quoted: mek });
-        
-        const endTime = Date.now();
-        const ping = endTime - startTime;
-        
-        
+        // පින්තූරය සමඟ යැවීමට අවශ්‍ය පණිවිඩය
         const pingText = `╭━━━〔 ᴛʜᴜʜɪ ᴍᴅ ᴠ01 〕━━━┈⊷
 ┃ 🏓 𝐏 𝐎 𝐍 𝐆 !
 ╰━━━━━━━━━━━━━━━┈⊷
 
-⭔ 𝙎𝙥𝙚𝙚𝙙 : ${ping}ms
+⭔ 𝙎𝙥𝙚𝙚𝙙 : Pinging...
 ⭔ 𝙎𝙩𝙖𝙩𝙪𝙨 : 𝙁𝙖𝙨𝙩 & 𝘼𝙘𝙩𝙞𝙫𝙚 🟢
 
 *© ᴛʜᴜʜɪ ᴍᴅ ᴠ01*`;
 
+        // පින්තූරය සමඟ පණිවිඩය යැවීම
+        const message = await conn.sendMessage(from, { 
+            image: { url: 'https://i.ibb.co/Z6gnPvV2/file-000009be47207afef1535933c3f19.png' }, 
+            caption: pingText 
+        }, { quoted: mek });
         
-        await conn.sendMessage(from, { text: pingText }, { quoted: message });
+        const endTime = Date.now();
+        const ping = endTime - startTime;
+        
+        // පින්තූරය සමඟම අගය යාවත්කාලීන කිරීම (Edit message)
+        const updatedPingText = `╭━━━〔 ᴛʜᴜʜɪ ᴍᴅ ᴠ01 〕━━━┈⊷
+┃ 🏓 𝐏 𝐎 𝐍 𝐆 !
+╰━━━━━━━━━━━━━━━┈⊷
+
+⭔ 𝙎𝙥𝙚𝙚𝙙 : ${ping}ms
+⭔ 𝙎𝙩𝙖𝙩𝙪𝙨 : 𝙁𝙖𝙨𝙩 & 𝘼𝙘𝙩𝙞𝙫ᴇ 🟢
+
+*© ᴛʜᴜʜɪ ᴍᴅ ᴠ01*`;
+
+        await conn.sendMessage(from, { text: updatedPingText, edit: message.key });
 
     } catch (e) {
         console.log(e);
         reply(`Error: ${e}`);
-    }
-})
-cmd({
-    pattern: "gay",
-    desc: "Check gay percentage.",
-    category: "fun",
-    react: "🏳️‍🌈",
-    filename: __filename
-},
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        
-        let targetNumber = senderNumber;
-        let targetJid = sender;
-
-        if (m.quoted) {
-            targetNumber = m.quoted.sender.split('@')[0];
-            targetJid = m.quoted.sender;
-        } else if (m.message?.extendedTextMessage?.contextInfo?.mentionedJid?.length > 0) {
-            targetJid = m.message.extendedTextMessage.contextInfo.mentionedJid[0];
-            targetNumber = targetJid.split('@')[0];
-        }
-
-        let responseText = '';
-
-        
-        if (targetNumber === "9476111111") {
-            responseText = `*🏳️‍🌈 ɢᴀʏ ᴄʜᴇᴄᴋᴇʀ 🏳️‍🌈*\n\n👤 ᴜsᴇʀ : @${targetNumber}\n📊 ɢᴀʏ ᴘᴇʀᴄᴇɴᴛᴀɢᴇ : *0%*\n\n😎 මේයා නම් සිරාම කොල්ලෙක්! කිසිම අවුලක් නෑ. (100% Straight)`;
-        } else {
-            
-            const percentage = Math.floor(Math.random() * 101);
-            let comment = '';
-            
-            if (percentage === 0) comment = "😎 නියම කොල්ලෙක්! (100% Straight)";
-            else if (percentage < 30) comment = "හොඳයි හොඳයි, ලොකු අවුලක් නෑ! 😌";
-            else if (percentage < 60) comment = "පොඩි සැකයක් තියෙනවා... හැරෙන පොට නම් හරි නෑ වගේ 🤔";
-            else if (percentage < 90) comment = "අම්මෝ... මූගෙන් පරිස්සමින් ඉන්න ඕන! 😬";
-            else comment = "අප්පටසිරි! සිරාම ඩයල් එකක්නේ. ළඟින්වත් තියාගන්න එපා... 🏃‍♂️💨";
-
-            responseText = `*🏳️‍🌈 ɢᴀʏ ᴄʜᴇᴄᴋᴇʀ 🏳️‍🌈*\n\n👤 ᴜsᴇʀ : @${targetNumber}\n📊 ɢᴀʏ ᴘᴇʀᴄᴇɴᴛᴀɢᴇ : *${percentage}%*\n\n${comment}`;
-        }
-
-        
-        await conn.sendMessage(from, { 
-            text: responseText, 
-            mentions: [targetJid] 
-        }, { quoted: mek });
-
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
     }
 })
