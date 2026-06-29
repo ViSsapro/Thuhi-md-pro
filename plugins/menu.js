@@ -2,7 +2,7 @@ const { cmd, commands } = require('../command');
 const os = require('os');
 const moment = require('moment-timezone');
 
-const botLogo = "https://i.ibb.co/d4s455Fn/f32b832e8b8d.jpg";
+const botLogo = "https://i.ibb.co/Z6gnPvV2/file-000009be47207afef1535933c3f19.png";
 
 const logoTypes = ["neon","neon2","fire2","glitch","hacker","futuristic","thunder","devil","fire","ice","snow","lava","metal","gold","silver","glossy","blackpink","transformer","horror","blood","joker","galaxy","space","cloud","sand","stone","magma","gradient","light","paper","watercolor","candy","christmas","luxury","leaf","summer","circuit","block3d","cartoon","chrome","frozen"];
 
@@ -38,12 +38,12 @@ async (conn, mek, m, { from, pushname, prefix, reply }) => {
         else if (time >= 12 && time < 17) greeting = "Good Afternoon";
         else if (time >= 17 && time < 20) greeting = "Good Evening";
 
-        const menuText = `╭─── « 𝗛𝗔𝗦𝗜 𝗠𝗗 𝗩𝟬𝟭 » ───⟡
+        const menuText = `╭─── « 𝐓ʜᴜʜɪ 𝐌ᴅ 𝐯𝟏 » ───⟡
 │
 │ ⊳ *𝗛𝗶 ${pushname}, ${greeting}!*
 │
-│ ◈ 𝗩𝗲𝗿𝘀𝗶𝗼𝗻 : 3.0.0
-│ ◈ 𝗢𝘄𝗻𝗲𝗿  : Yasas Dileepa
+│ ◈ 𝗩𝗲𝗿𝘀𝗶𝗼𝗻 : 1.0.0
+│ ◈ 𝗢𝘄𝗻𝗲𝗿  : thuhina vimukthi wijerathna
 │ ◈ 𝗥𝗮𝗺    : ${ramUsage}
 │ ◈ 𝗨𝗽𝘁𝗶𝗺𝗲 : ${rtime}
 │ ◈ 𝗛𝗼𝘀𝘁   : ${hostname}
@@ -103,13 +103,13 @@ const generateSubMenu = async (conn, mek, from, category, title, pushname, reply
 
         if (cmdList === '') cmdList = `│ ⊳ No commands found.\n│\n`;
 
-        let menuContent = `╭─── « 𝗛𝗔𝗦𝗜 𝗠𝗗 𝗩𝟬𝟭» ───⟡
+        let menuContent = `╭─── « 𝐓ʜᴜʜɪ 𝐌ᴅ 𝐯𝟏» ───⟡
 │
 │ ⊳ *${title}*
 │
 ${cmdList}╰───────────────⟡
 
-> © 𝗛𝗔𝗦𝗜 𝗠𝗗 𝗩𝟬𝟭`;
+> © 𝐓ʜᴜʜɪ 𝐌ᴅ 𝐯𝟏`;
 
         const imgBuffer = Buffer.from(await (await fetch(botLogo)).arrayBuffer());
         await conn.sendMessage(from, { image: imgBuffer, caption: menuContent }, { quoted: mek });
@@ -122,7 +122,7 @@ ${cmdList}╰───────────────⟡
 cmd({ pattern: "logomenu", dontAddCommandList: true, filename: __filename },
 async(conn, mek, m, {from, pushname, reply}) => {
     try {
-        let logoList = `╭─── « 𝗛𝗔𝗦𝗜 𝗠𝗗 𝗩𝟬𝟭 » ───⟡
+        let logoList = `╭─── « 𝐓ʜᴜʜɪ 𝐌ᴅ 𝐯𝟏 » ───⟡
 │
 │ ⊳ *𝗟𝗢𝗚𝗢 𝗠𝗔𝗞𝗘𝗥 𝗠𝗘𝗡𝗨*
 │
@@ -140,7 +140,7 @@ async(conn, mek, m, {from, pushname, reply}) => {
 > _Reply with a number to generate._
 > _To set custom name: .logo <name>_
 
-> © 𝗛𝗔𝗦𝗜 𝗠𝗗 𝗩𝟬𝟭`;
+> © 𝐓ʜᴜʜɪ 𝐌ᴅ 𝐯𝟏`;
 
         const imgBuffer = Buffer.from(await (await fetch(botLogo)).arrayBuffer());
         const sentMsg = await conn.sendMessage(from, { image: imgBuffer, caption: logoList }, { quoted: mek });
