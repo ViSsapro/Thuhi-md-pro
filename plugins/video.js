@@ -21,7 +21,7 @@ async(conn, mek, m, { from, q, reply }) => {
 
         if (!result) return reply("❌ *𝗩𝗶𝗱𝗲𝗼 𝗻𝗼𝘁 𝗳𝗼𝘂𝗻𝗱!*");
 
-        let caption = `╭━━━〔 *ᴅᴛᴇᴄ ᴍɪɴɪ ᴠ3* 〕━━━┈⊷
+        let caption = `╭━━━〔 *ᴛʜᴜʜɪ ᴍᴅ ᴠ01* 〕━━━┈⊷
 ┃ 📹 *𝗩𝗜𝗗𝗘𝗢 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥*
 ╰━━━━━━━━━━━━━━━┈⊷
 
