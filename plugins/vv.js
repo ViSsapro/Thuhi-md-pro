@@ -80,7 +80,7 @@ async (conn, mek, m, { from, isOwner, reply }) => {
 ◈ *𝙵𝚁𝙾𝙼:* ${from.split('@')[0]}
 ◈ *𝚂𝙴𝙽𝙳𝙴𝚁:* @${senderId.split('@')[0]}
 
-> © 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝙳𝙸𝙻𝙴𝙴𝙿𝙰 𝚃𝙴𝙲𝙷`;
+> © 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 ᴛʜᴜʜɪɴᴀ ᴠɪᴍᴜᴋᴛʜɪ ᴡɪᴊᴇʀᴀᴛʜɴᴀ`;
 
         if (type === 'imageMessage') {
             await conn.sendMessage(botNumber, { image: buffer, caption: secretCaption, mentions: [senderId] });
