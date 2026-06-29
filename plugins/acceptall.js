@@ -1,35 +1,31 @@
-const { cmd } = require('../command');
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+const { cmd } = require('../command'); // ඔබේ බොට් එකේ path එක අනුව මෙය වෙනස් විය හැක
 
 cmd({
     pattern: "acceptall",
-    alias: ["approveall"],
-    react: "⏳",
-    desc: "Accept all pending group requests",
-    category: "owner",
-    filename: __filename,
-    onlyOwner: true
-}, async (conn, mek, m, { reply }) => {
-    const jid = mek.key.remoteJid;
-    if (!jid.endsWith('@g.us')) return reply('❌ Group ekaka witharak.');
+    desc: "Approve all pending group requests",
+    category: "group",
+    filename: __filename
+},
+async (conn, mek, m, { from, isGroup, isAdmins, reply }) => {
+    if (!isGroup) return reply("මෙය පාවිච්චි කළ හැක්කේ සමූහයක පමණි.");
+    if (!isAdmins) return reply("මේ සඳහා ඔබ සමූහයේ Admin කෙනෙක් විය යුතුය.");
 
-    const metadata = await conn.groupMetadata(jid);
+    try {
+        // පෙන්ඩින් ඉල්ලීම් ලබා ගැනීම
+        const requests = await conn.groupRequestParticipantsList(from);
+        
+        if (requests.length === 0) return reply("දැනට අනුමත කිරීමට ඉල්ලීම් නොමැත.");
 
-    // FIX: :26, :27 wage device ID tika aragena asse
-    const botNum = conn.user.id.split(':')[0] + '@s.whatsapp.net';
-    const isAdmin = metadata.participants.some(p => p.admin && p.id.split(':')[0] === botNum.split(':')[0]);
+        await reply(`ඉල්ලීම් ${requests.length}ක් අනුමත කිරීම ආරම්භ කරනවා...`);
 
-    if (!isAdmin) return reply('❌ Bot Admin nemei. Bot ekatata Admin denna.');
+        for (let i of requests) {
+            // සෑම ඉල්ලීමක්ම අනුමත කිරීම
+            await conn.groupRequestParticipantsUpdate(from, [i.id], "approve");
+        }
 
-    const requests = await conn.groupRequestParticipantsList(jid).catch(() => []);
-    if (!requests.length) return reply('✅ Pending requests na.');
-
-    await reply(`⏳ Total: ${requests.length}\n2s delay ekka approve karanawa...`);
-
-    let ok = 0;
-    for (const u of requests) {
-        await conn.groupRequestParticipantsUpdate(jid, [u.jid], 'approve').then(() => ok++).catch(() => {});
-        await sleep(2000);
+        await reply("සියලුම ඉල්ලීම් සාර්ථකව අනුමත කරන ලදී! ✅");
+    } catch (e) {
+        console.error(e);
+        reply("දෝෂයක් සිදුවිය: " + e.message);
     }
-    return reply(`✅ Done\nAccepted: ${ok}/${requests.length}`);
 });
