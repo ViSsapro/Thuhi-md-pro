@@ -43,7 +43,7 @@ async (conn, mek, m, { from, q, reply }) => {
 │
 ╰───────────────⟡
 
-> © HASI MD V01`;
+> © THUHI MD V01`;
 
         
         await conn.sendMessage(from, { 
