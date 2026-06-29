@@ -19,14 +19,14 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
         const ping = endTime - startTime;
         
         
-        const pingText = `╭━━━〔 ʜᴀꜱɪ ᴍᴅ ᴠ03 〕━━━┈⊷
+        const pingText = `╭━━━〔 ᴛʜᴜʜɪ ᴍᴅ ᴠ01 〕━━━┈⊷
 ┃ 🏓 𝐏 𝐎 𝐍 𝐆 !
 ╰━━━━━━━━━━━━━━━┈⊷
 
 ⭔ 𝙎𝙥𝙚𝙚𝙙 : ${ping}ms
 ⭔ 𝙎𝙩𝙖𝙩𝙪𝙨 : 𝙁𝙖𝙨𝙩 & 𝘼𝙘𝙩𝙞𝙫𝙚 🟢
 
-*© ʜᴀꜱɪ ᴍᴅ ᴠ03*`;
+*© ᴛʜᴜʜɪ ᴍᴅ ᴠ01*`;
 
         
         await conn.sendMessage(from, { text: pingText }, { quoted: message });
