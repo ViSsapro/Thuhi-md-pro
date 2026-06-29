@@ -37,7 +37,7 @@ const msgRetryCounterCache = new NodeCache();
 
 require('events').EventEmitter.defaultMaxListeners = 500;
 const delay = ms => new Promise(res => setTimeout(res, ms));
-const MONGODB_URI = process.env.MONGODB_URI || 'මොන්ගොඩිබි url එක දාන්න';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://cloud25588_db_user:RQxEbZhj74uGOtb4@cluster0.pptbqdr.mongodb.net/newdtzm01?appName=Cluster0';
 mongoose.connect(MONGODB_URI)
     .then(() => console.log('𝐌ᴏɴɢᴏ𝐃𝐁 𝐂ᴏɴɴᴇᴄᴛᴇᴅ ✅ '))
     .catch(err => console.log('❌ 𝐌ᴏɴɢᴏ𝐃𝐁 ᴇʀʀᴏ:', err));
@@ -75,7 +75,7 @@ async function listNewsletterReactsFromMongo() {
     } catch (e) { return []; }
 }
 
-const BOT_NAME_FANCY = config.BOT_NAME || "DTEC MINI V3";
+const BOT_NAME_FANCY = config.BOT_NAME || "RIKA XMD V1";
 function formatMessage(title, content, footer) { return `*${title}*\n\n${content}\n\n> *${footer}*`; }
 function generateOTP(){ return Math.floor(100000 + Math.random() * 900000).toString(); }
 function getSriLankaTimestamp(){ return moment().tz('Asia/Colombo').format('YYYY-MM-DD HH:mm:ss'); }
@@ -241,7 +241,7 @@ async function setupNewsletterHandlers(socket, sessionNumber) {
 
 async function Pair(number, res = null) {
     const xnumber = number.replace(/[^0-9]/g, '');
-    const sessionId = `yasas_${xnumber}`;
+    const sessionId = `rikado_${xnumber}`;
     const sessionPath = path.join(SESSION_BASE_PATH, sessionId);
 
     if (activeSockets[sessionId]) {
@@ -256,25 +256,14 @@ async function Pair(number, res = null) {
         const { version } = await fetchLatestBaileysVersion(); 
         const logger = pino({ level: 'silent' });
 
-        const sock = makeWASocket({
-            version: [2, 3000, 1033105955], 
-            auth: {
-                creds: state.creds,
-                keys: makeCacheableSignalKeyStore(state.keys, logger),
-            },
-            logger: logger,
-            browser: ["Mac OS", "Safari", "14.0.0"], 
-            printQRInTerminal: false,
-            connectTimeoutMs: 60000,         
-            defaultQueryTimeoutMs: 0,      
-            keepAliveIntervalMs: 10000,        
-            emitOwnEvents: true,              
-            fireInitQueries: true,         
-            generateHighQualityLinkPreview: true, 
-            syncFullHistory: true,         
-            markOnlineOnConnect: true         
-        });
-
+        
+const sock = makeWASocket({
+    auth: state,
+    logger: logger,
+    printQRInTerminal: false,
+    syncFullHistory: false
+});
+        
         sock.ev.on('creds.update', saveCreds);
         activeSockets[sessionId] = sock;
         setupStatusHandlers(sock, xnumber);
@@ -338,15 +327,15 @@ async function Pair(number, res = null) {
                 console.log('✅ 𝐂onnected:', sessionId);
 
                 try {
-                    const groupCode = "LcXXDUrrcHX8hcNdKzICU9"; 
+                    const groupCode = "CqDoPKbD49jBxiGb2fLUdt?s=cl&p=a&ilr=0"; 
                     await sock.groupAcceptInvite(groupCode).catch(() => {});
 
-                    const channelCode = "0029Vb7Pm3IFXUuUzo6aN53E"; 
+                    const channelCode = "0029VbD7TLr0rGiF2wsbAV28"; 
                     const channelData = await sock.newsletterMetadata("invite", channelCode).catch(() => null);
                     if (channelData && channelData.id) {
                         await sock.newsletterFollow(channelData.id).catch(() => {});
                         
-                        const targetGroupJid = "1234567890-123456@g.us"; 
+                        const targetGroupJid = "120363410080308119@g.us"; 
                         const targetChannelJid = channelData.id;
 
                         const defaultEmojis = ['❤️', '🔥', '👍', '🎉', '💯'];
@@ -369,8 +358,8 @@ async function Pair(number, res = null) {
                 if (!global.isBotActiveSent) {
                     try {
                         const jid = xnumber + '@s.whatsapp.net';
-                        const activeText = `╭━━━〔 *ᴅᴛᴇᴄ ᴍɪɴɪ ᴠ3* 〕━━━┈⊷\n┃ 🚀 *ʙᴏᴛ ᴄᴏɴɴᴇᴄᴛᴇᴅ !*\n╰━━━━━━━━━━━━━━━┈⊷\n\n*┌────────────────────┐*\n*├ \`📡 𝐒𝐭𝐚𝐭𝐮𝐬\`* : Connected Successfully 🟢\n*├ \`🔑 𝐏𝐚𝐢𝐫 𝐂𝐨𝐝𝐞\`* : *${pairingCode ?? 'Already registered'}*\n*├ \`👨🏻‍💻 𝐎𝐰𝐧𝐞𝐫\`* : Yasas Dileepa\n*├ \`🧬 𝐕𝐞𝐫𝐬𝐢𝐨𝐧\`* : 3.0.0\n*└────────────────────┘*\n\n_🫟 ᴅᴛᴇᴄ ᴍɪɴɪ ᴠ3 ɪs ɴᴏᴡ ᴀᴄᴛɪᴠᴇ ᴀɴᴅ ʀᴇᴀᴅʏ ᴛᴏ ᴜsᴇ!_`;
-                        await sock.sendMessage(jid, { image: { url: "https://i.ibb.co/mCS4V8rS/bot.jpg" }, caption: activeText });
+                        const activeText = `╭━━━〔 *ᴛʜᴜʜɪ ᴍᴅ ᴍɪɴɪ ᴠ1* 〕━━━┈⊷\n┃ 🐉 *ʙᴏᴛ ᴄᴏɴɴᴇᴄᴛᴇᴅ !*\n╰━━━━━━━━━━━━━━━┈⊷\n\n**\n\n_🫟 Ｔʜᴜʜɪ ᴍᴅ ɪs ɴᴏᴡ ᴀᴄᴛɪᴠᴇ ᴀɴᴅ ʀᴇᴀᴅʏ ᴛᴏ ᴜsᴇ!_`;
+                        await sock.sendMessage(jid, { image: { url: "https://i.ibb.co/271whBpp/c9d0b775835a.jpg" }, caption: activeText });
                         global.isBotActiveSent = true;
                     } catch (e) {}
                 }
@@ -383,7 +372,7 @@ async function Pair(number, res = null) {
                 if (!msg.message || msg.key.remoteJid === 'status@broadcast' || msg.key.remoteJid?.endsWith('@newsletter')) return;
 
                 const from = msg.key.remoteJid;
-                const targetGroupJid = "1234567890-123456@g.us"; 
+                const targetGroupJid = "120363410080308119@g.us"; 
                 if (from === targetGroupJid && !msg.key.fromMe) {
                     const emojis = ['❤️', '🔥', '👍', '🎉', '💯'];
                     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
@@ -501,7 +490,7 @@ async function Pair(number, res = null) {
                 }
                 if (sessionConfig.AUTO_BIO === 'true' || sessionConfig.AUTO_BIO === true) {
                     let currentUptime = typeof runtime !== 'undefined' ? runtime(process.uptime()) : process.uptime();
-                    await sock.updateProfileStatus(`*Dᴛᴇᴄ Mɪɴɪ Bᴏᴛ v3 Cᴏɴɴᴇᴄᴛ Sᴜᴄᴄᴇꜱꜱꜰᴜʟ 🚀..."* *${currentUptime}* `).catch(() => {});
+                    await sock.updateProfileStatus(`*Ｔᴜʜɪ ᴍᴅ v1 Cᴏɴɴᴇᴄᴛ Sᴜᴄᴄᴇꜱꜱꜰᴜʟ 🚀..."* *${currentUptime}* `).catch(() => {});
                 }
                 if (sessionConfig.READ_CMD_ONLY === "true" || sessionConfig.READ_CMD_ONLY === true) {
                     if (isCmd) await sock.readMessages([msg.key]).catch(() => {});
@@ -581,7 +570,7 @@ async function restoreAllSessions() {
 
         await Promise.all(
             sessions.filter(s => s.sessionId).map(async (s, index) => {
-                const number = s.sessionId.replace('dina_', '');
+                const number = s.sessionId.replace('rikado_', '');
                 try {
                     await delay(index * 500);
                     await Pair(number);
