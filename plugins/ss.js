@@ -69,7 +69,7 @@ async (conn, mek, m, { from, q, reply }) => {
 │
 ╰───────────────⟡
 
-> © 𝗗𝗧𝗘𝗖 𝗠𝗜𝗡𝗜 𝗩𝟯`;
+> © 𝗧𝗛𝗨𝗛𝗜 𝗠𝗗 𝗩𝟬𝟭`;
 
         await conn.sendMessage(from, {
             image: { url: apiUrl },
