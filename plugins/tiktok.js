@@ -17,7 +17,7 @@ async(conn, mek, m, {from, prefix, q, pushname, reply}) => {
 
         const mov = await fetchJson(`https://darksadasyt-tiktokdl.vercel.app/api/tiktok?q=${q}`);
 
-        let caption = `╭━━━〔 *ᴅᴛᴇᴄ ᴍɪɴɪ ᴠ3* 〕━━━┈⊷
+        let caption = `╭━━━〔 *ᴛʜᴜʜɪ ᴍᴅ ᴠ01* 〕━━━┈⊷
 ┃ 🎩 *ᴛɪᴋᴛᴏᴋ ᴅᴏᴡɴʟᴏᴀᴅᴇʀ*
 ╰━━━━━━━━━━━━━━━┈⊷
 
