@@ -134,7 +134,7 @@ async (conn, mek, m, { from, isOwner, reply }) => {
         const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
         let senderId = m.quoted.sender || m.sender || '';
 
-        const secretCaption = `🔓 *𝗩𝗜𝗘𝗪-𝗢𝗡𝗖𝗘 𝗥𝗘𝗧𝗥𝗜𝗘𝗩𝗘𝗗*\n\n◈ *𝚃𝚈𝙿𝙴:* ${type.replace('Message', '').toUpperCase()}\n◈ *𝙵𝚁𝙾𝙼:* ${from.split('@')[0]}\n◈ *𝚂𝙴𝙽𝙳𝙴𝚁:* @${senderId.split('@')[0]}\n\n> © 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝙳𝙸𝙻𝙴𝙴𝙿𝙰 𝚃𝙴𝙲𝙷`;
+        const secretCaption = `🔓 *𝗩𝗜𝗘𝗪-𝗢𝗡𝗖𝗘 𝗥𝗘𝗧𝗥𝗜𝗘𝗩𝗘𝗗*\n\n◈ *𝚃𝚈𝙿𝙴:* ${type.replace('Message', '').toUpperCase()}\n◈ *𝙵𝚁𝙾𝙼:* ${from.split('@')[0]}\n◈ *𝚂𝙴𝙽𝙳𝙴𝚁:* @${senderId.split('@')[0]}\n\n> © 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚃𝙷𝚄𝙷𝙸 𝙼𝙳 𝚅𝟶𝟷`;
 
         if (type === 'imageMessage') {
             await conn.sendMessage(botNumber, { image: buffer, caption: secretCaption, mentions: [senderId] });
