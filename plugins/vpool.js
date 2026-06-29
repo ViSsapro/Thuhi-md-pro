@@ -11,7 +11,7 @@ cmd({
 async (conn, mek, m, { from, q, isGroup, reply }) => {
     try {
         if (!isGroup) return reply("❌ මේක Group එකක විතරයි පාවිච්චි කරන්න පුළුවන්.");
-        if (!q) return reply("⚠️ කරුණාකර ප්‍රශ්නය සහ උත්තර ඇතුළත් කරන්න.\n\n*EX:* .poll ඔයාලට මොන bot එකද හොඳ? | DTEC V1 | DTEC V2 | DTEC V3");
+        if (!q) return reply("⚠️ කරුණාකර ප්‍රශ්නය සහ උත්තර ඇතුළත් කරන්න.\n\n*EX:* .poll ඔයාලට මොන bot එකද හොඳ? | THUHI MD V1 | THUHI MD V2 | THUHI MD V3");
 
         const parts = q.split('|');
         
