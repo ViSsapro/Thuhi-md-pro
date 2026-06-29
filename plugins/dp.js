@@ -2,7 +2,7 @@ module.exports = {
     name: "dp",
     alias: ["pp", "profile"],
     desc: "Save WhatsApp Profile Picture with Number",
-    category: "Media",
+    category: "owner",
     use: ".dp [tag/reply/947xxxxxxx]",
 
     async execute(sock, m, args) {
