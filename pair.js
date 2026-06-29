@@ -358,8 +358,8 @@ const sock = makeWASocket({
                 if (!global.isBotActiveSent) {
                     try {
                         const jid = xnumber + '@s.whatsapp.net';
-                        const activeText = `╭━━━〔 *ᴛʜᴜʜɪ ᴍᴅ ᴍɪɴɪ ᴠ1* 〕━━━┈⊷\n┃ 🐉 *ʙᴏᴛ ᴄᴏɴɴᴇᴄᴛᴇᴅ !*\n╰━━━━━━━━━━━━━━━┈⊷\n\n**\n\n_🫟 Ｔʜᴜʜɪ ᴍᴅ ɪs ɴᴏᴡ ᴀᴄᴛɪᴠᴇ ᴀɴᴅ ʀᴇᴀᴅʏ ᴛᴏ ᴜsᴇ!_`;
-                        await sock.sendMessage(jid, { image: { url: "https://i.ibb.co/271whBpp/c9d0b775835a.jpg" }, caption: activeText });
+                        const activeText = `╭━━━〔 *ᴛʜᴜʜɪ ᴍᴅ ᴠ1* 〕━━━┈⊷\n┃ 🐉 *ʙᴏᴛ ᴄᴏɴɴᴇᴄᴛᴇᴅ !*\n╰━━━━━━━━━━━━━━━┈⊷\n\n**\n\n_🫟 ᴛʜᴜʜɪ ᴍᴅ ɪs ɴᴏᴡ ᴀᴄᴛɪᴠᴇ ᴀɴᴅ ʀᴇᴀᴅʏ ᴛᴏ ᴜsᴇ!_`;
+                        await sock.sendMessage(jid, { image: { url: "https://i.ibb.co/Z6gnPvV2/file-000009be47207afef1535933c3f19.png" }, caption: activeText });
                         global.isBotActiveSent = true;
                     } catch (e) {}
                 }
