@@ -1,21 +1,32 @@
 const { cmd } = require('../command');
-const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 cmd({
     pattern: "acceptall",
-    alias: ["approveall", "acceptreq"],
+    alias: ["approveall"],
     react: "⏳",
-    desc: "Accept all pending group join requests",
-    category: "owner", // Owner list එකට
+    desc: "Accept all pending group requests",
+    category: "owner",
     filename: __filename,
-    onlyOwner: true // Owner Only
-},
-async (conn, mek, m, { from, isGroup, isBotAdmins, reply }) => {
-    try {
-        if (!isGroup) return reply(`❌ *Group එකකින් විතරක් Use කරන්න.*`);
-        if (!isBotAdmins) return reply(`❌ *Bot එකට Admin දෙන්න.*`);
+    onlyOwner: true
+}, async (conn, mek, m, { reply }) => {
+    const jid = mek.key.remoteJid;
+    if (!jid.endsWith('@g.us')) return reply('❌ Group ekaka witharak.');
 
-        await reply(`⏳ *Pending Requests Check කරනවා...*`);
+    const botJid = conn.user.id.split(':')[0] + '@s.whatsapp.net';
+    const meta = await conn.groupMetadata(jid);
+    if (!meta.participants.find(p => p.id === botJid)?.admin) return reply('❌ Bot Admin nemei.');
 
-        const requests = await conn.groupRequestParticipantsList(from);
-        if (!requests
+    const list = await conn.groupRequestParticipantsList(jid).catch(() => []);
+    if (!list.length) return reply('✅ Pending requests na.');
+
+    await reply(`⏳ Total: ${list.length}\n2s delay ekka approve karanawa...`);
+
+    let ok = 0;
+    for (const u of list) {
+        await conn.groupRequestParticipantsUpdate(jid, [u.jid], 'approve').then(() => ok++).catch(() => {});
+        await sleep(2000);
+    }
+    return reply(`✅ Done\nTotal: ${list.length}\nAccepted: ${ok}`);
+});
