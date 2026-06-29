@@ -42,7 +42,7 @@ async (conn, mek, m, { from, q, reply, pushname }) => {
         caption += `╰───────────────⟡
 
 _🔢 Reply with a number to download HD._
-*© ᴅᴛᴇᴄ ᴍɪɴɪ ᴠ3*`;
+*© ᴛʜᴜʜɪ ᴍᴅ ᴠ01*`;
 
         const sentMsg = await conn.sendMessage(from, {
             image: { url: data.result[0].image }, 
@@ -72,7 +72,7 @@ async (conn, mek, m, { from, q, reply }) => {
 
         await conn.sendMessage(from, { 
             image: { url: q }, 
-            caption: `✅ *𝗛𝗗 𝗪𝗮𝗹𝗹𝗽𝗮𝗽𝗲𝗿 𝗗𝗲𝗹𝗶𝘃𝗲𝗿𝗲𝗱!* \n\n> © 𝙳𝚃𝙴𝙲 𝙼𝙸𝙽𝙸 𝚅𝟹` 
+            caption: `✅ *𝗛𝗗 𝗪𝗮𝗹𝗹𝗽𝗮𝗽𝗲𝗿 𝗗𝗲𝗹𝗶𝘃𝗲𝗿𝗲𝗱!* \n\n> © ᴛʜᴜʜɪ ᴍᴅ ᴠ01` 
         }, { quoted: mek });
 
         await conn.sendMessage(from, { react: { text: "🖼️", key: mek.key } });
