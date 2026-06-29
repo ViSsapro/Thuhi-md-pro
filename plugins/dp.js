@@ -1,56 +1,49 @@
-module.exports = {
-    name: "dp",
-    alias: ["pp", "profile"],
-    desc: "Save WhatsApp Profile Picture with Number",
-    category: "owner",
-    use: ".dp [tag/reply/947xxxxxxx]",
+const { cmd } = require('../command');
 
-    async execute(sock, m, args) {
+cmd({
+    pattern: "dp",
+    alias: ["pp", "profile"],
+    react: "🖼️",
+    desc: "Save WhatsApp Profile Picture with Number",
+    category: "owner", // <-- මේක නිසයි Owner Menu එකට එන්නේ
+    use: '.dp [tag/reply/947xxxxxxx]',
+    filename: __filename
+},
+async (conn, mek, m, { from, args, q, isOwner, reply, sender }) => {
+    try {
         let targetJid = null;
 
-        // 1. Tag කර ඇති පරිශීලකයා හඳුනා ගැනීම
-        if (m.mentionedJid && m.mentionedJid.length > 0) {
+        // 1. Tag කරලා නම්:.dp @user
+        if (m.mentionedJid && m.mentionedJid[0]) {
             targetJid = m.mentionedJid[0];
-        } 
-        // 2. Reply කර ඇති පරිශීලකයා හඳුනා ගැනීම
+        }
+        // 2. Reply කරලා නම්:.dp
         else if (m.quoted) {
             targetJid = m.quoted.sender;
-        } 
-        // 3. අංකයක් ලබා දී ඇත්නම් එය හඳුනා ගැනීම
-        else if (args[0] && /^\d+$/.test(args[0])) {
-            let num = args[0].replace(/[^0-9]/g, '');
-            // ශ්‍රී ලංකා අංකයක් නම් 94 එකතු කිරීම
-            if (!num.startsWith('94') && num.length < 10) num = '94' + num;
+        }
+        // 3. Number දාලා නම්:.dp 94701153310
+        else if (q && /[0-9]/.test(q)) {
+            let num = q.replace(/[^0-9]/g, '');
+            if (!num.startsWith('94')) num = '94' + num;
             targetJid = num + '@s.whatsapp.net';
-        } 
-        // 4. කිසිවක් නැත්නම් තමන්ගේම DP එක ලබා ගැනීම
+        }
+        // 4. මොකුත් නැත්තම්: Own DP
         else {
-            targetJid = m.sender;
+            targetJid = sender;
         }
 
-        try {
-            // පළමුව High Quality 'image' එක උත්සාහ කරයි, එය නොමැති නම් 'preview' එක ගනී
-            let ppUrl;
-            try {
-                ppUrl = await sock.profilePictureUrl(targetJid, 'image');
-            } catch {
-                ppUrl = await sock.profilePictureUrl(targetJid, 'preview');
-            }
+        let ppUrl = await conn.profilePictureUrl(targetJid, 'image');
+        let number = targetJid.split('@')[0];
 
-            let number = targetJid.split('@')[0];
+        // ඔය ඉල්ලපු Format එක
+        let caption = `*Type:* Image\n*Dp number info:* +${number}\n\n𝗧𝗛𝗨𝗛𝗜 𝗠𝗗 𝗩𝟬𝟭\n©> ᴩᴏᴡᴇʀᴅ ʙʏ ᴛʜᴜʜɪɴᴀ ᴠɪᴍᴜᴋᴛʜɪ ᴡɪᴊᴇʀᴀᴛʜɴᴀ`;
 
-            // ප්‍රතිදානය (Caption)
-            let caption = `*Type:* Image\n*Dp number info:* +${number}\n\n𝗧𝗛𝗨𝗛𝗜 𝗠𝗗 𝗩𝟬𝟭\n©> ᴩᴏᴡᴇʀᴅ ʙʏ ᴛʜᴜʜɪɴᴀ ᴠɪᴍᴜᴋᴛʜɪ ᴡɪᴊᴇʀᴀᴛʜɴᴀ`;
+        await conn.sendMessage(from, {
+            image: { url: ppUrl },
+            caption: caption
+        }, { quoted: mek });
 
-            // පින්තූරය යැවීම
-            await sock.sendMessage(m.chat, {
-                image: { url: ppUrl },
-                caption: caption
-            }, { quoted: m });
-
-        } catch (err) {
-            // දෝෂයක් වුවහොත් ලැබෙන පණිවිඩය
-            return m.reply(`❌ DP එක ලබා ගැනීමට නොහැක.\nහේතුව: ඒ කෙනා Privacy Lock කර ඇත හෝ අංකය වැරදියි.`);
-        }
+    } catch (err) {
+        return reply(`❌ DP එක ගන්න බැරි වුණා.\nහේතුව: ඒ කෙනා Privacy Lock කරලා.`);
     }
-};
+});
