@@ -4,45 +4,52 @@ cmd({
     pattern: "dp",
     alias: ["pp", "profile"],
     react: "🖼️",
-    desc: "Get WhatsApp Profile Picture",
+    desc: "Save WhatsApp/business whatsapp Profile Picture with Number",
     category: "owner",
-    use: '.dp [tag/reply/number]',
+    use: '.dp [tag/reply/947xxxxxxx]',
     filename: __filename
 },
-async (conn, mek, m, { from, args, q, reply }) => {
+async (conn, mek, m, { from, args, q, isOwner, reply, sender }) => {
     try {
-        let targetJid;
+        let targetJid = null;
+        const isGroup = from.endsWith('@g.us'); // Group ද Private Chat ද Check කරනවා
 
-        // JID එක තීරණය කිරීම (Tag, Reply, හෝ Number)
+        // 1. Tag කරලා නම්:.dp @user - Group + Private දෙකේම වැඩ
         if (m.mentionedJid && m.mentionedJid[0]) {
             targetJid = m.mentionedJid[0];
-        } else if (m.quoted) {
+        }
+        // 2. Reply කරලා නම්:.dp - Group + Private දෙකේම වැඩ
+        else if (m.quoted) {
             targetJid = m.quoted.sender;
-        } else if (q) {
+        }
+        // 3. Number දාලා නම්:.dp 94701153310 - Private එකේ වැඩ
+        else if (q && /[0-9]/.test(q)) {
             let num = q.replace(/[^0-9]/g, '');
+            if (!num.startsWith('94')) num = '94' + num;
             targetJid = num + '@s.whatsapp.net';
-        } else {
-            targetJid = from;
+        }
+        // 4. මොකුත් නැත්තම්:
+        else {
+            if (isGroup) {
+                // Group එකේ නම්: Tag/Reply/Number අනිවාර්යයි
+                return reply(`❌ *Group එකේ DP ගන්න:* \n\`.dp @tag\` හෝ \`.dp\` Reply කරලා.`);
+            } else {
+                // Private Chat එකේ නම්: Chat Partner ගේ DP එක
+                targetJid = from;
+            }
         }
 
-        // DP එක ලබා ගැනීමට උත්සාහ කිරීම
-        try {
-            let ppUrl = await conn.profilePictureUrl(targetJid, 'image');
-            
-            let caption = `*👤 Profile Picture*\n\n*JID:* ${targetJid.split('@')[0]}\n\n> ᴛʜᴜʜɪ ᴍᴅ ᴠ1`;
-            
-            await conn.sendMessage(from, {
-                image: { url: ppUrl },
-                caption: caption
-            }, { quoted: mek });
+        let ppUrl = await conn.profilePictureUrl(targetJid, 'image');
+        let number = targetJid.split('@')[0];
 
-        } catch (e) {
-            // DP එක පෞද්ගලික නම් හෝ නැත්නම් මෙතැනට එයි
-            return reply("❌ *ප්‍රොෆයිල් පින්තූරය ලබාගත නොහැක.* \n\nමෙයට හේතු විය හැක:\n1. එම පුද්ගලයා DP එක 'Private' කර තිබීම.\n2. ඔබ එම අංකය Save කර නොතිබීම.\n3. ඔවුන් සතුව DP එකක් නොතිබීම.");
-        }
+        let caption = `*Type:* Image\n*Dp number info:* +${number}\n\n𝗧𝗛𝗨𝗛𝗜 𝗠𝗗 𝗩𝟬𝟭\n©> ᴩᴏᴡᴇʀᴅ ʙʏ ᴛʜᴜʜɪɴᴀ ᴠɪᴍᴜᴋᴛʜɪ ᴡɪᴊᴇʀᴀᴛʜɴᴀ`;
+
+        await conn.sendMessage(from, {
+            image: { url: ppUrl },
+            caption: caption
+        }, { quoted: mek });
 
     } catch (err) {
-        console.log(err);
-        return reply("❌ *දෝෂයක් සිදුවිය.*");
+        return reply(`❌ DP එක ගන්න බැරි වුණා.\nහේතුව: ඒ කෙනා Privacy Lock කරලා.`);
     }
 });
