@@ -5,37 +5,43 @@ cmd({
     alias: ["pp", "profile"],
     react: "🖼️",
     desc: "Save WhatsApp Profile Picture with Number",
-    category: "owner", // <-- මේක නිසයි Owner Menu එකට එන්නේ
+    category: "owner",
     use: '.dp [tag/reply/947xxxxxxx]',
     filename: __filename
 },
 async (conn, mek, m, { from, args, q, isOwner, reply, sender }) => {
     try {
         let targetJid = null;
+        const isGroup = from.endsWith('@g.us'); // Group ද Private Chat ද Check කරනවා
 
-        // 1. Tag කරලා නම්:.dp @user
+        // 1. Tag කරලා නම්:.dp @user - Group + Private දෙකේම වැඩ
         if (m.mentionedJid && m.mentionedJid[0]) {
             targetJid = m.mentionedJid[0];
         }
-        // 2. Reply කරලා නම්:.dp
+        // 2. Reply කරලා නම්:.dp - Group + Private දෙකේම වැඩ
         else if (m.quoted) {
             targetJid = m.quoted.sender;
         }
-        // 3. Number දාලා නම්:.dp 94701153310
+        // 3. Number දාලා නම්:.dp 94701153310 - Private එකේ වැඩ
         else if (q && /[0-9]/.test(q)) {
             let num = q.replace(/[^0-9]/g, '');
             if (!num.startsWith('94')) num = '94' + num;
             targetJid = num + '@s.whatsapp.net';
         }
-        // 4. මොකුත් නැත්තම්: Own DP
+        // 4. මොකුත් නැත්තම්:
         else {
-            targetJid = sender;
+            if (isGroup) {
+                // Group එකේ නම්: Tag/Reply/Number අනිවාර්යයි
+                return reply(`❌ *Group එකේ DP ගන්න:* \n\`.dp @tag\` හෝ \`.dp\` Reply කරලා.`);
+            } else {
+                // Private Chat එකේ නම්: Chat Partner ගේ DP එක
+                targetJid = from;
+            }
         }
 
         let ppUrl = await conn.profilePictureUrl(targetJid, 'image');
         let number = targetJid.split('@')[0];
 
-        // ඔය ඉල්ලපු Format එක
         let caption = `*Type:* Image\n*Dp number info:* +${number}\n\n𝗧𝗛𝗨𝗛𝗜 𝗠𝗗 𝗩𝟬𝟭\n©> ᴩᴏᴡᴇʀᴅ ʙʏ ᴛʜᴜʜɪɴᴀ ᴠɪᴍᴜᴋᴛʜɪ ᴡɪᴊᴇʀᴀᴛʜɴᴀ`;
 
         await conn.sendMessage(from, {
