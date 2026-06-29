@@ -50,6 +50,6 @@ async (conn, mek, m, { from, args, q, isOwner, reply, sender }) => {
         }, { quoted: mek });
 
     } catch (err) {
-        return reply(`❌ DP එක ගන්න බැරි වුණා.\nහේතුව: ඒ කෙනා Privacy Lock කරලා.`);
+        return reply(`❌ DP එක ගන්න බැරි වුණා.`);
     }
 });
