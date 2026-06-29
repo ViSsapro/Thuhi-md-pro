@@ -1,6 +1,5 @@
 const { cmd } = require('../command');
-
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 cmd({
     pattern: "acceptall",
@@ -14,19 +13,25 @@ cmd({
     const jid = mek.key.remoteJid;
     if (!jid.endsWith('@g.us')) return reply('❌ Group ekaka witharak.');
 
-    const botJid = conn.user.id.split(':')[0] + '@s.whatsapp.net';
-    const meta = await conn.groupMetadata(jid);
-    if (!meta.participants.find(p => p.id === botJid)?.admin) return reply('❌ Bot Admin nemei.');
+    // Fix: Bot admin da kiyala direct check
+    const metadata = await conn.groupMetadata(jid);
+    const admins = metadata.participants.filter(p => p.admin).map(p => p.id);
+    const botNumber = conn.user.id.replace(/:\d+/, '') + '@s.whatsapp.net'; // :26 remove kara
+    
+    if (!admins.includes(botNumber)) return reply('❌ Bot Admin nemei. Bot ekatata Admin denna.');
 
-    const list = await conn.groupRequestParticipantsList(jid).catch(() => []);
-    if (!list.length) return reply('✅ Pending requests na.');
+    const requests = await conn.groupRequestParticipantsList(jid).catch(() => null);
+    if (!requests || requests.length === 0) return reply('✅ Pending requests na.');
 
-    await reply(`⏳ Total: ${list.length}\n2s delay ekka approve karanawa...`);
+    await reply(`⏳ Total: ${requests.length}\n2s delay ekka approve karanawa... ~${Math.ceil(requests.length*2/60)} min`);
 
     let ok = 0;
-    for (const u of list) {
-        await conn.groupRequestParticipantsUpdate(jid, [u.jid], 'approve').then(() => ok++).catch(() => {});
+    for (const u of requests) {
+        try {
+            await conn.groupRequestParticipantsUpdate(jid, [u.jid], 'approve');
+            ok++;
+        } catch (e) {}
         await sleep(2000);
     }
-    return reply(`✅ Done\nTotal: ${list.length}\nAccepted: ${ok}`);
+    return reply(`✅ Done\nTotal: ${requests.length}\nAccepted: ${ok}`);
 });
