@@ -52,7 +52,7 @@ async (conn, mek, m, { from, q, reply, pushname }) => {
 │
 ╰───────────────⟡
 
-> © 𝗗𝗧𝗘𝗖 𝗠𝗜𝗡𝗜 𝗩𝟯`;
+> © 𝗧𝗛𝗨𝗛𝗜 𝗠𝗗 𝗩𝟬𝟭`;
 
         await reply(caption);
         await conn.sendMessage(from, { react: { text: "✅", key: mek.key } });
