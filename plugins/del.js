@@ -1,5 +1,4 @@
 const { cmd } = require('../command');
-const { getAnti, setAnti } = require('../data/antidel');
 
 cmd({
     pattern: "antidelete",
